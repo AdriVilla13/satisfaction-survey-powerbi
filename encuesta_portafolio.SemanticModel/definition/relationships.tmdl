@@ -1,0 +1,18 @@
+relationship 583caff4-81ba-4d49-a0f6-7099b097113a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Respuestas.'Marca temporal'
+	toColumn: LocalDateTable_7b3f2fee-8b6a-4a0f-bce8-863d1c2cc418.Date
+
+relationship AutoDetected_e1910672-902a-45db-8b17-2227b6051be6
+	fromColumn: Calificaciones.'ID respuesta'
+	toColumn: Respuestas.'ID respuesta'
+
+relationship AutoDetected_f24bf725-5836-474a-a786-3b8dade91546
+	fromColumn: Calificaciones.Respuesta
+	toColumn: Escala.Respuesta
+
+relationship 7fa0b4ea-da10-4400-813e-f849a0f8cae1
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Respuestas.Fecha
+	toColumn: LocalDateTable_5fa0344b-a581-4830-a310-9edb6bc8476b.Date
+

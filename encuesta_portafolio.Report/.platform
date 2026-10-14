@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "encuesta_portafolio"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "4130da8a-608b-4ffb-84d9-1aa0d0287092"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "Custom",
+  "textClasses": {
+    "label": {
+      "fontFace": "'Trebuchet MS'"
+    },
+    "title": {
+      "fontFace": "'Trebuchet MS'"
+    },
+    "callout": {
+      "fontFace": "'Trebuchet MS'"
+    },
+    "header": {
+      "fontFace": "'Trebuchet MS'"
+    }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "outspacePane": [
+          {
+            "fontFamily": "'Trebuchet MS'"
+          }
+        ],
+        "filterCard": [
+          {
+            "$id": "Available",
+            "fontFamily": "'Trebuchet MS'"
+          }
+        ]
+      }
+    }
+  }
+}

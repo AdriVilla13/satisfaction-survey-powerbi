@@ -1,0 +1,24 @@
+model Model
+	culture: es-ES
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: es-MX
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["Respuestas","Calificaciones","Escala"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Respuestas
+ref table DateTableTemplate_fcf38e46-1149-457c-bc51-fd9c1f79c4f2
+ref table LocalDateTable_7b3f2fee-8b6a-4a0f-bce8-863d1c2cc418
+ref table Calificaciones
+ref table Escala
+ref table LocalDateTable_5fa0344b-a581-4830-a310-9edb6bc8476b
+
+ref cultureInfo es-ES
+

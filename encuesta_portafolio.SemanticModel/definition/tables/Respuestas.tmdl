@@ -1,0 +1,85 @@
+table Respuestas
+	lineageTag: 027f9944-aeb7-463a-985b-dc5efe34433b
+
+	column 'Marca temporal'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2e44aee0-bfdc-4e39-bf51-4acb09c33246
+		summarizeBy: none
+		sourceColumn: Marca temporal
+
+		variation Variación
+			isDefault
+			relationship: 583caff4-81ba-4d49-a0f6-7099b097113a
+			defaultHierarchy: LocalDateTable_7b3f2fee-8b6a-4a0f-bce8-863d1c2cc418.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mesero
+		dataType: string
+		lineageTag: 0bb21c92-9d92-4e6f-9024-626a9bf33697
+		summarizeBy: none
+		sourceColumn: Mesero
+
+		annotation SummarizationSetBy = Automatic
+
+	column Turno
+		dataType: string
+		lineageTag: c3e40297-ca26-4680-835b-d80f60ed2009
+		summarizeBy: none
+		sourceColumn: Turno
+
+		annotation SummarizationSetBy = Automatic
+
+	column Comentarios
+		dataType: string
+		lineageTag: f71b8919-15d6-4507-9dbc-89dd4d409e1f
+		summarizeBy: none
+		sourceColumn: Comentarios
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ID respuesta'
+		dataType: int64
+		formatString: 0
+		lineageTag: 99a0b142-0bb4-4381-895a-f857db0ae1f1
+		summarizeBy: none
+		sourceColumn: ID respuesta
+
+		annotation SummarizationSetBy = Automatic
+
+	column Fecha
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: cb035057-0615-4da0-93cd-08eb6e8f51bd
+		summarizeBy: none
+		sourceColumn: Fecha
+
+		variation Variación
+			isDefault
+			relationship: 7fa0b4ea-da10-4400-813e-f849a0f8cae1
+			defaultHierarchy: LocalDateTable_5fa0344b-a581-4830-a310-9edb6bc8476b.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition Respuestas = m
+		mode: import
+		source =
+				let
+				    Origen = Excel.Workbook(File.Contents("C:\Villi\encuesta-satisfaccion-powerbi\encuesta_anonimizada.xlsx"), null, true),
+				    #"Respuestas de formulario 1_Sheet" = Origen{[Item="Respuestas de formulario",Kind="Sheet"]}[Data],
+				    #"Encabezados promovidos" = Table.PromoteHeaders(#"Respuestas de formulario 1_Sheet", [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Marca temporal", type datetime}, {"Mesero", type text}, {"Turno", type text}, {"¿Cómo le recibimos a su llegada?", type text}, {"¿Cómo evalúa nuestro servicio?", type text}, {"¿Los platillos fueron de su agrado?", type text}, {"¿Su estancia en el restaurante fue de su agrado?", type text}, {"¿Las instalaciones cumplen con sus necesidades?", type text}, {"¿Cómo recibe su auto el Valet Parking?", type text}, {"¿Cómo le atendió su mesero?", type text}, {"¿Cómo califica nuestro pan?", type text}, {"¿Qué le parecen nuestros paquetes de alimentos?", type text}, {"Comentarios", type text}}),
+				    #"Índice agregado" = Table.AddIndexColumn(#"Tipo cambiado", "Índice", 1, 1, Int64.Type),
+				    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Índice agregado",{{"Índice", "ID respuesta"}}),
+				    #"Otras columnas quitadas" = Table.SelectColumns(#"Columnas con nombre cambiado",{"Marca temporal", "Mesero", "Turno", "Comentarios", "ID respuesta"}),
+				    #"Fecha insertada" = Table.AddColumn(#"Otras columnas quitadas", "Fecha", each DateTime.Date([Marca temporal]), type date)
+				in
+				    #"Fecha insertada"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

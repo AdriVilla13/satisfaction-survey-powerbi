@@ -1,0 +1,100 @@
+table Calificaciones
+	lineageTag: 330f57da-3238-41f5-a328-d8e518973087
+
+	measure Clientes = DISTINCTCOUNT(Calificaciones[ID Respuesta])
+		lineageTag: aa0c9b7d-b3de-4ca9-aef1-c33139af818e
+
+	measure 'Calificaciones válidas' = COUNTX(Calificaciones, RELATED(Escala[Puntos]))
+		formatString: 0
+		lineageTag: a4eb0845-abfb-4c57-adad-5294289f75b0
+
+	measure Índice = AVERAGEX(Calificaciones, RELATED(Escala[Puntos]))
+		formatString: 0
+		lineageTag: 28abb805-6939-466b-90a2-ea8622609270
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '% Excelente' =
+			DIVIDE(
+			    CALCULATE([Calificaciones válidas], Escala[Respuesta] = "Excelente"),
+			    [Calificaciones válidas]
+			)
+		formatString: 0%;-0%;0%
+		lineageTag: 60cd882f-10e8-4cbe-81b4-6e8d2210e0ef
+
+	measure '% Regular o Malo' =
+			DIVIDE(
+			    CALCULATE([Calificaciones válidas], Escala[Respuesta] IN {"Regular", "Malo"}),
+			    [Calificaciones válidas]
+			)
+		formatString: 0%;-0%;0%
+		lineageTag: 04224e24-dcca-456b-909b-66d0ddaf55a5
+
+	measure 'Llegaron a pie' = CALCULATE(COUNTROWS(Calificaciones), Escala[Respuesta] = "Llegó a pie")
+		formatString: 0
+		lineageTag: 54e389a5-063a-4338-8025-58b576e2e418
+
+	measure 'Total respuestas' = COUNTROWS(Calificaciones)
+		formatString: 0
+		lineageTag: 6ba4a51c-0a9b-4209-925c-9a93a5dee12f
+
+	measure 'Detalle comentario' = SELECTEDVALUE(Respuestas[Mesero])
+		lineageTag: 9355a247-2274-4d37-a381-6293e526967a
+
+	measure Comentario = SELECTEDVALUE(Respuestas[Comentarios])
+		lineageTag: 96bdd616-08b6-4243-a929-1df0ec10a20a
+
+	column 'ID respuesta'
+		dataType: int64
+		formatString: 0
+		lineageTag: 31999bfe-aded-466b-ae07-e585b0a7c328
+		summarizeBy: none
+		sourceColumn: ID respuesta
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pregunta
+		dataType: string
+		lineageTag: 27ad3abe-d8da-4a88-b397-ba86266d996a
+		summarizeBy: none
+		sourceColumn: Pregunta
+
+		annotation SummarizationSetBy = Automatic
+
+	column Respuesta
+		dataType: string
+		lineageTag: 5e056f9e-cea3-412e-af9a-5df5926aec45
+		summarizeBy: none
+		sourceColumn: Respuesta
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calificaciones = m
+		mode: import
+		source =
+				let
+				    Origen = Excel.Workbook(File.Contents("C:\Villi\encuesta-satisfaccion-powerbi\encuesta_anonimizada.xlsx"), null, true),
+				    #"Respuestas de formulario 1_Sheet" = Origen{[Item="Respuestas de formulario",Kind="Sheet"]}[Data],
+				    #"Encabezados promovidos" = Table.PromoteHeaders(#"Respuestas de formulario 1_Sheet", [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Marca temporal", type datetime}, {"Mesero", type text}, {"Turno", type text}, {"¿Cómo le recibimos a su llegada?", type text}, {"¿Cómo evalúa nuestro servicio?", type text}, {"¿Los platillos fueron de su agrado?", type text}, {"¿Su estancia en el restaurante fue de su agrado?", type text}, {"¿Las instalaciones cumplen con sus necesidades?", type text}, {"¿Cómo recibe su auto el Valet Parking?", type text}, {"¿Cómo le atendió su mesero?", type text}, {"¿Cómo califica nuestro pan?", type text}, {"¿Qué le parecen nuestros paquetes de alimentos?", type text}, {"Comentarios", type text}}),
+				    #"Índice agregado" = Table.AddIndexColumn(#"Tipo cambiado", "Índice", 1, 1, Int64.Type),
+				    #"Columnas quitadas" = Table.RemoveColumns(#"Índice agregado",{"Marca temporal", "Mesero", "Turno", "Comentarios"}),
+				    #"Columnas con nombre cambiado" = Table.RenameColumns(#"Columnas quitadas",{{"Índice", "ID respuesta"}}),
+				    #"Otras columnas con anulación de dinamización" = Table.UnpivotOtherColumns(#"Columnas con nombre cambiado", {"ID respuesta"}, "Atributo", "Valor"),
+				    #"Columnas con nombre cambiado1" = Table.RenameColumns(#"Otras columnas con anulación de dinamización",{{"Atributo", "Pregunta"}, {"Valor", "Respuesta"}}),
+				    #"Valor reemplazado" = Table.ReplaceValue(#"Columnas con nombre cambiado1","¿Cómo le recibimos a su llegada?","Recepción",Replacer.ReplaceValue,{"Pregunta"}),
+				    #"Valor reemplazado1" = Table.ReplaceValue(#"Valor reemplazado","¿Cómo evalúa nuestro servicio?","Servicio",Replacer.ReplaceValue,{"Pregunta"}),
+				    #"Valor reemplazado2" = Table.ReplaceValue(#"Valor reemplazado1","¿Los platillos fueron de su agrado?","Platillos",Replacer.ReplaceValue,{"Pregunta"}),
+				    #"Valor reemplazado3" = Table.ReplaceValue(#"Valor reemplazado2","¿Su estancia en el restaurante fue de su agrado?","Estancia",Replacer.ReplaceValue,{"Pregunta"}),
+				    #"Valor reemplazado4" = Table.ReplaceValue(#"Valor reemplazado3","¿Las instalaciones cumplen con sus necesidades?","Instalaciones",Replacer.ReplaceValue,{"Pregunta"}),
+				    #"Valor reemplazado5" = Table.ReplaceValue(#"Valor reemplazado4","¿Cómo recibe su auto el Valet Parking?","Valet Parking",Replacer.ReplaceValue,{"Pregunta"}),
+				    #"Valor reemplazado6" = Table.ReplaceValue(#"Valor reemplazado5","¿Cómo le atendió su mesero?","Atención del mesero",Replacer.ReplaceValue,{"Pregunta"}),
+				    #"Valor reemplazado7" = Table.ReplaceValue(#"Valor reemplazado6","¿Cómo califica nuestro pan?","Pan",Replacer.ReplaceValue,{"Pregunta"}),
+				    #"Valor reemplazado8" = Table.ReplaceValue(#"Valor reemplazado7","¿Qué le parecen nuestros paquetes de alimentos?","Paquetes",Replacer.ReplaceValue,{"Pregunta"})
+				in
+				    #"Valor reemplazado8"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

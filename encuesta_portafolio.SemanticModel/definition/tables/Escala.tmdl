@@ -1,0 +1,43 @@
+table Escala
+	lineageTag: 6ea3912d-8653-4539-a328-38b0237974cd
+
+	column Respuesta
+		dataType: string
+		lineageTag: f0ccbb76-ab9e-4fed-84e3-9d2c731d13ab
+		summarizeBy: none
+		sourceColumn: Respuesta
+		sortByColumn: Orden
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Puntos
+		dataType: int64
+		formatString: 0
+		lineageTag: f692d829-7fc5-44ab-a4c6-eca22b7c461f
+		summarizeBy: none
+		sourceColumn: Puntos
+
+		annotation SummarizationSetBy = Automatic
+
+	column Orden
+		dataType: int64
+		formatString: 0
+		lineageTag: 74e4c726-3059-4866-8cb9-d78f795191f4
+		summarizeBy: none
+		sourceColumn: Orden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Escala = m
+		mode: import
+		source =
+				let
+				    Origen = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45Wcq1ITs1JzStJVdJRMjQwAJFKsTrRSk6lqXn5QJ6ZOZAwAgsFpaaX5iQWAfnGxiACLOibmANSBtJoAhbwyUlNP7xZIVGhIBNkJhCZgsX98hWS84H2FJcc3gwRN1OKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Respuesta = _t, Puntos = _t, Orden = _t]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(Origen,{{"Respuesta", type text}, {"Puntos", Int64.Type}, {"Orden", Int64.Type}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_ResultType = Table
+
