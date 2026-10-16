@@ -4,7 +4,7 @@
   "position": {
     "x": 412.5,
     "y": 145,
-    "z": 2500,
+    "z": 3000,
     "height": 122.5,
     "width": 1480,
     "tabOrder": 4000
@@ -220,65 +220,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "8de629b7865f16a59d40",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Calificaciones"
-              }
-            },
-            "Property": "Clientes"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "61ea1c2c2fc54ac7f439",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Calificaciones"
-              }
-            },
-            "Property": "% Excelente"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "3346c25fb8c7046fcc8f",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Calificaciones"
-              }
-            },
-            "Property": "% Regular o Malo"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "c2c54d738ce2a212865b",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Calificaciones"
-              }
-            },
-            "Property": "Llegaron a pie"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }
