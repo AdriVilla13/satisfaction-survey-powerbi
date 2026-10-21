@@ -11,7 +11,7 @@
       "type": "SharedResources"
     },
     "customTheme": {
-      "name": "Custom8332871908588666.json",
+      "name": "Custom23544723047490002.json",
       "reportVersionAtImport": {
         "visual": "2.13.0",
         "report": "3.4.0",
@@ -65,8 +65,8 @@
       "type": "RegisteredResources",
       "items": [
         {
-          "name": "Custom8332871908588666.json",
-          "path": "Custom8332871908588666.json",
+          "name": "Custom23544723047490002.json",
+          "path": "Custom23544723047490002.json",
           "type": "CustomTheme"
         }
       ]

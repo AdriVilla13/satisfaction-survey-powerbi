@@ -68,7 +68,7 @@ table Respuestas
 		mode: import
 		source =
 				let
-				    Origen = Excel.Workbook(File.Contents("C:\Villi\encuesta-satisfaccion-powerbi\encuesta_anonimizada.xlsx"), null, true),
+				    Origen = Excel.Workbook(File.Contents("C:\Villi\GitHub\encuesta-satisfaccion-powerbi\encuesta_anonimizada.xlsx"), null, true),
 				    #"Respuestas de formulario 1_Sheet" = Origen{[Item="Respuestas de formulario",Kind="Sheet"]}[Data],
 				    #"Encabezados promovidos" = Table.PromoteHeaders(#"Respuestas de formulario 1_Sheet", [PromoteAllScalars=true]),
 				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"Marca temporal", type datetime}, {"Mesero", type text}, {"Turno", type text}, {"¿Cómo le recibimos a su llegada?", type text}, {"¿Cómo evalúa nuestro servicio?", type text}, {"¿Los platillos fueron de su agrado?", type text}, {"¿Su estancia en el restaurante fue de su agrado?", type text}, {"¿Las instalaciones cumplen con sus necesidades?", type text}, {"¿Cómo recibe su auto el Valet Parking?", type text}, {"¿Cómo le atendió su mesero?", type text}, {"¿Cómo califica nuestro pan?", type text}, {"¿Qué le parecen nuestros paquetes de alimentos?", type text}, {"Comentarios", type text}}),

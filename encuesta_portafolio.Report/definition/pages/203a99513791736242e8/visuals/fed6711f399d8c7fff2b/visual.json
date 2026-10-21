@@ -2,8 +2,8 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "name": "fed6711f399d8c7fff2b",
   "position": {
-    "x": 810,
-    "y": 287.5,
+    "x": 809.30462307135451,
+    "y": 263.37284069778997,
     "z": 1000,
     "height": 532.5,
     "width": 1082.5,
@@ -69,6 +69,23 @@
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Calificaciones"
+                  }
+                },
+                "Property": "Índice"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
       }
     },
     "objects": {
@@ -574,51 +591,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "eb970ff9552fde3cde83",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Calificaciones"
-              }
-            },
-            "Property": "Pregunta"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "427b41e06db92c484b4d",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Respuestas"
-              }
-            },
-            "Property": "Mesero"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "1ce9e7f96c21b8242e17",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Calificaciones"
-              }
-            },
-            "Property": "Índice"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }
